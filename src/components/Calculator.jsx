@@ -1,41 +1,22 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
+import computeViaLocally from "../../lib/onermapp/computeViaLocally";
 
 const Calculator = ()=>{
     const numArr = Array.from({length: 11})
-    // const computeViaApi = (operandOne,operandTwo,operator)=>{
-    //     switch(operator){
-    //         case "+":
-    //         default:
-    //     }
-    // }
 
-    const [operand1, setOperand1] = useState("")
-    const [operand2, setOperand2] = useState("")
-    //if 1 thenoperan 1 if not then operand 2
-    const [whichOperand, setWhichOperand] = useState(1)
+    const weightRef = useRef(null)
+    const repsRef = useRef(null)
+    const exerciseRef = useRef(null)
+    const lbsRef = useRef(null)
+    const kiloRef = useRef(null)
 
+    // const [operand1, setOperand1] = useState("")
+    // const [operand2, setOperand2] = useState("")
+    // //if 1 thenoperan 1 if not then operand 2
+    // const [whichOperand, setWhichOperand] = useState(1)
     const [computationRes, setComputationRes] = useState(0);
-    // const computeViaLocally = (operandOne,operandTwo,operator)=>{
-    //     switch(operator){
-    //         case "+":
-    //             break;
-    //         case "-":
-    //             break;
-    //         case "/":
-    //             break;
-    //         case "*":
-    //             break;
-    //         default:
-    //             console.log("Nothing to computee")
-    //     }
-    // }
+    const [checkRadio, setCheckRadio] = useState(true);
 
-    // const fillOperand = (nO)=>{
-    //     const number = Number(nO);
-    //     if(operand1 !=)
-    //     if(operand1 == "" && whichOperand == 1){
-    //         setOperand1(operand1 + nO)
-    //     }
 
     //     if(op)
     // }
@@ -47,7 +28,7 @@ const Calculator = ()=>{
                 </div>
 
                 <div class="w-full h-5/6 flex justify-center items-center text-white ">
-                    <div class="">
+                    <div class=" w-full h-full flex flex-col justify-evenly items-center">
                     {/* {numArr.map((val,idx)=>{
                         switch(idx){
                             case idx==0:
@@ -66,26 +47,30 @@ const Calculator = ()=>{
                         })} */}
                         {/* <input></input>
                         <input></input> */}
-                        <div>
+                        <div class="flex flex-col justify-start items-start  w-2/4 ">
                             <label>Input Weight in Selected Weight unit</label>
-                            <input type="number" name="weight" class="text-black"/>
+                            <input ref={weightRef} type="number" name="weight" class="text-black"/>
                         </div>
-                        <div>
+                        <div class="flex flex-col justify-start items-start  w-2/4 ">
+                            <label>Input No Of Reps</label>
+                            <input ref={repsRef} type="number" name="reps" class="text-black"/>
+                        </div>
+                        <div class="flex flex-col justify-start items-start  w-2/4 ">
                             <label>Exercise:</label>
-                            <select name="cars" id="cars" class="text-black">
-                                <option value="volvo">Bench Press</option>
-                                <option value="saab">Squat</option>
-                                <option value="opel">Deadlift</option>
+                            <select ref={exerciseRef} name="TypeOfExer" class="text-black">
+                                <option value="Bench Press">Bench Press</option>
+                                <option value="Squat">Squat</option>
+                                <option value="Deadlift">Deadlift</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="w-2/4">
                             <div>
                                 <h3>Choose Weight unit</h3>
                             </div>
                             <div>
-                                <input type="radio" id="age1" name="age" value="30"/>
+                                <input type="radio" ref={lbsRef} name="weight" value="pounds" checked/>
                                 <label for="age1">Pounds (lb)</label><br></br>
-                                <input type="radio" id="age2" name="age" value="60"/>
+                                <input type="radio" ref={kiloRef} name="weight" value="kilos"/>
                                 <label for="age2">Kilograms (kg)</label><br></br>  
                             </div>
                         </div>
@@ -94,9 +79,17 @@ const Calculator = ()=>{
                         </div>
                     </div>
                     <div class="w-1/4 h-5/6">
-                        <div class="h-1/4">Result of computation: {computationRes}</div>
-                        <div>
-                            <button class="border hover:bg-lime-500">Calcuate</button>
+                        <div class="h-2/4">Result of computation: {computationRes}</div>
+                        <div class= "h-2/4">
+                            <button class="border hover:bg-lime-500" onClick={(e)=>{
+                                let output = computeViaLocally(weightRef.current,repsRef.current,exerciseRef.current,lbsRef.current,kiloRef.current);
+                                if(output.isComputed){
+                                    setComputationRes(output.outputRes)
+                                }else{
+                                    setComputationRes(output.outputRes)
+                                    alert("The value cannot be computed")
+                                }
+                            }}>Calcuate</button>
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 FROM ubuntu:22.04
 
 #Update all the package
-RUN sudo apt update
+RUN sudo apt-get update
 
 #Need to install node && npm
 RUN sudo apt-get install -y nodejs npm

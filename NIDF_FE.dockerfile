@@ -7,7 +7,13 @@ RUN sudo apt-get update
 #Need to install node && npm
 RUN sudo apt-get install -y nodejs npm
 
-WORKDIR /user/NIDS_FE
+WORKDIR /NIDS_FE
+
+#Copy application code
+COPY . .
+
+#Need to install the npm packages
+RUN npm install
 
 #Need to build the npm packge
 RUN npm run build
